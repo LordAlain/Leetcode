@@ -4,7 +4,8 @@ class Solution:
         max_height = max(height)
         curr = 0
         res = 0
-
+    
+        # while l < r:
         while max_height * (r - l) > res:
             curr = (r - l) * min(height[l], height[r])
             res = max (res, curr)
