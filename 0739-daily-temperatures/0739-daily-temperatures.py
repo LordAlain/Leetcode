@@ -1,32 +1,14 @@
 class Solution:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
-        length = len(temperatures)
-        result = [0] * length
-        
-        # brute force using two pointers
-        # for l, val in enumerate(temperatures):
-        #     r = l + 1
-        #     result[l] = 0
-        #     while r < length:
-        #         if val < temperatures[r]:
-        #             result[l] = r - l
-        #             break
-        #         else:
-        #             r += 1
-
-        # dynamic programming using two pointers
-        # We solve backwards
-        for l in range(length - 2, -1, -1):
-            r = l + 1
-            while r < length and temperatures[r] <= temperatures[l]:
-                # if the following value is 0, all remaining values are 0
-                if result[r] == 0:
-                    r = length
-                    break
-                # We can skip as we already calculated the distance to the next highest value
-                r += result[r]
-            
-            if r < length:
-                result[l] = r - l
-        
-        return result
+        answer = [0] * len(temperatures)
+        warmest_temp = temperatures[-1]
+        for day in range(len(temperatures) - 2, -1, -1):
+            temp = temperatures[day]
+            if temp >= warmest_temp:
+                warmest_temp = temp
+            else:
+                next_day = day + 1
+                while temperatures[next_day] <= temp:
+                    next_day += answer[next_day]
+                answer[day] = next_day - day
+        return answer
